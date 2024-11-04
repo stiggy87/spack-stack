@@ -102,6 +102,10 @@ packages:
     # Note: Uncommenting this entry will break
     # the container builds.
     #require: '@2.11.0'
+    # To avoid duplicate packages being built
+  gmake:
+    require:
+    - one_of: ['@=4.2.1', '@=4.4.1']
   grib-util:
     require: '@1.4.0'
   gsibec:
@@ -170,7 +174,7 @@ packages:
   odc:
     require: '@1.5.2 ~fortran'
   openblas:
-    require: '@0.3.24 +noavx512'
+    require: '@0.3.24'
   openmpi:
     require: '~internal-hwloc +two_level_namespace'
   openssl:
