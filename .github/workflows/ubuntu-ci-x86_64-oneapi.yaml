@@ -161,22 +161,22 @@ jobs:
           # base-env
           echo "base-env ..."
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.base-env
-          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
+          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ base-env
 
           # jedi-base-env
           echo "jedi-base-env ..."
           spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.jedi-base-env
-          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
+          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
 
           # jedi-ufs-env
           echo "jedi-ufs-env ..."
           spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.jedi-ufs-env
-          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
+          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
 
           # the rest
           echo "unified-env ..."
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.unified-env
-          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
+          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/
 
           # Remove binary cache for next round of concretization
           if [ "$USE_BINARY_CACHE" = true ] ; then
