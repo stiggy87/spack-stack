@@ -159,7 +159,7 @@ jobs:
           source ./setup.sh
           # Important!
           export SPACK_PYTHON=/usr/bin/python3
-          export BUILDCACHE_ENVNAME=ue-apple-clang-14.0.3-builddcache
+          export BUILDCACHE_ENVNAME=ue-apple-clang-14.0.3-buildcache
           export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
           export ENVNAME=ue-apple-clang-14.0.3
           export ENVDIR=$PWD/envs/${ENVNAME}
