@@ -243,6 +243,3 @@ jobs:
           module load ewok-env
           module load soca-env
           module list
-
-          echo "Contents of MPI metamodule:"
-          cat ${ENVDIR}/install/modulefiles/oneapi/2024.2.0/stack-intel-oneapi-mpi/2021.13
