@@ -12,6 +12,9 @@ packages:
   gettext:
     require:
     - '@:0.21'
+  go:
+    require:
+    - '%gcc'
   gsibec:
     require:
     - '+mkl'
