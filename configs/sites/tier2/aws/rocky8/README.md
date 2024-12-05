@@ -211,7 +211,6 @@ git clone -b develop --recursive https://github.com/jcsda/spack-stack.git
 <summary><b>GCC Installation</b></summary>
 
 ```bash
-```bash
 sudo su -
 
 cd /opt/spack-stack
@@ -260,13 +259,16 @@ spack config add "packages:fontconfig:variants:+pic"
 spack config add "packages:pixman:variants:+pic"
 spack config add "packages:cairo:variants:+pic"
 spack config add "packages:ewok-env:variants:+mysql"
+
 # Concretize and install
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
 spack install --verbose --fail-fast 2>&1 | tee log.install
+
 # Install modules
 spack module lmod refresh
 spack stack setup-meta-modules
+
 # Add a number of default module locations to the lmod startup script.
 cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
 module use /opt/spack-stack/envs/unified-env-gcc/install/modulefiles/Core
@@ -278,7 +280,7 @@ EOF
 <details>
 <summary><b>Intel Installation</b></summary>
 
-### Clean and Unified Intel Toolchain
+#### Install Intel Compiler
 
 ```bash
 rm -rf /opt/intel
@@ -304,6 +306,7 @@ sh math.sh -a --silent --eula accept | tee install.math.log
 popd
 ```
 
+#### Create Intel Environment
 ```bash
 tmux -s intel
 sudo su -
@@ -392,7 +395,7 @@ spack stack setup-meta-modules
 # Example given for building jedi-bundle
 module use /opt/spack-stack/envs/unified-dev-gcc/install/modulefiles/Core
 module load stack-gcc/11.2.1
-module load stack-openmpi/5.0.5
+module load stack-openmpi/4.1.6
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env
