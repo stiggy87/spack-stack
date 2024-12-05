@@ -58,9 +58,7 @@ tmux ls
 tmux attach -t my-session-name
 ```
 
-
 More information on how to use `tmux`: <https://tmuxcheatsheet.com/>
-
 
 </details>
 
@@ -73,12 +71,10 @@ sudo dnf -y install tmux
 tmux new -s setup
 sudo su -
 
-
 # Compilers
 dnf install gcc-toolset-11-gcc-c++ \
         gcc-toolset-11-gcc-gfortran \
         gcc-toolset-11-gdb
-
 
 #Install other requirements.
 dnf install binutils-devel \
@@ -214,10 +210,71 @@ git clone -b develop --recursive https://github.com/jcsda/spack-stack.git
 <details>
 <summary><b>GCC Installation</b></summary>
 
-### Step 1
+```bash
+```bash
+sudo su -
 
+cd /opt/spack-stack
+source setup.sh
+
+# Swap default module type for default linux.
+sed -i 's/tcl/lmod/g' configs/sites/tier2/linux.default/modules.yaml
+spack stack create env --site linux.default --template unified-dev --name unified-env-gcc --compiler gcc
+cd envs/unified-env-gcc 
+spack env activate -p .
+export SPACK_SYSTEM_CONFIG_PATH="$PWD/site"
+spack external find --scope system \
+    --exclude cmake \
+    --exclude curl --exclude openssl \
+    --exclude openssh --exclude python
+spack external find --scope system wget
+spack external find --scope system mysql
+spack compiler find --scope system
+unset SPACK_SYSTEM_CONFIG_PATH
+
+# ACTION: Edit the site/packages.yaml and add these packages
+# If not present.
+cat << 'EOF' >> $PWD/site/packages.yaml
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@11.2.1
+      prefix: /usr
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@11.2.1
+      prefix: /usr
+  qt:
+    buildable: false
+    externals:
+    - spec: qt@5.15.3
+      prefix: /usr
+      version: [5.15.3]
+EOF
+
+# Continue configuration.
+spack config add "packages:all:compiler:[gcc@11.2.1]"
+spack config add "packages:all:providers:mpi:[openmpi@5.0.5]"
+spack config add "packages:fontconfig:variants:+pic"
+spack config add "packages:pixman:variants:+pic"
+spack config add "packages:cairo:variants:+pic"
+spack config add "packages:ewok-env:variants:+mysql"
+# Concretize and install
+spack concretize 2>&1 | tee log.concretize
+${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
+spack install --verbose --fail-fast 2>&1 | tee log.install
+# Install modules
+spack module lmod refresh
+spack stack setup-meta-modules
+# Add a number of default module locations to the lmod startup script.
+cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
+module use /opt/spack-stack/envs/unified-env-gcc/install/modulefiles/Core
+EOF
+```
 
 </details>
+
 <details>
 <summary><b>Intel Installation</b></summary>
 
@@ -246,19 +303,6 @@ sh math.sh -a --silent --eula accept | tee install.math.log
 
 popd
 ```
-
-</details>
-
-<details>
-<summary>Spack Stack install for GCC</summary>
-
-```bash
-```
-
-</details>
-
-<details>
-<summary>Spack Stack install for Intel</summary>
 
 ```bash
 tmux -s intel
@@ -339,17 +383,16 @@ spack stack setup-meta-modules
 
 </details>
 
-<details>
-<summary>Spack Stack install for Clang (TBD)</summary>
-</details>
-
 ## Test Installation
+
+<details>
+<summary>GCC</summary>
 
 ```bash
 # Example given for building jedi-bundle
-module use /opt/spack-stack/envs/unified-dev-intel/install/modulefiles/Core
-module load stack-intel
-module load stack-openmpi/4.1.6
+module use /opt/spack-stack/envs/unified-dev-gcc/install/modulefiles/Core
+module load stack-gcc/11.2.1
+module load stack-openmpi/5.0.5
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env
@@ -366,5 +409,34 @@ make update
 make -j10
 ctest
 ```
+
+</details>
+
+<details>
+<summary>Intel</summary>
+
+```bash
+# Example given for building jedi-bundle
+module use /opt/spack-stack/envs/unified-dev-intel/install/modulefiles/Core
+module load stack-intel/2021.10.0
+module load stack-intel-oneapi-mpi/2021.10.0
+module load base-env
+module load jedi-mpas-env
+module load jedi-fv3-env
+module load ewok-env
+module load sp
+
+mkdir /opt/jedi
+cd /opt/jedi
+git clone https://github.com/JCSDA-internal/jedi-bundle.git
+cd jedi-bundle
+mkdir build && cd build
+ecbuild ../
+make update
+make -j10
+ctest
+```
+
+</details>
 
 The installation and configuration is now complete for the instance.

@@ -70,29 +70,6 @@ service sshd restart
 exit # Exit root access
 ```
 
-<!-- ### Install Docker
-
-```bash
-# See https://docs.docker.com/engine/install/ubuntu/
-apt-get update
-apt-get install ca-certificates curl gnupg lsb-release
-mkdir -m 0755 -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-apt-get update
-apt install -y docker-ce \
-    docker-ce-cli containerd.io \
-    docker-buildx-plugin \
-    docker-compose-plugin
-docker run hello-world
-
-sudo usermod -aG docker $USER
-
-# Exit root session
-exit
-``` -->
-
 ### Install Lmod
 
 ```bash
@@ -140,7 +117,7 @@ exit
 
 ```bash
 cd /opt
-sudo git clone -b develop --recursive https://github.com/jcsda/spack-stack.git
+sudo git clone -b develop --depth 1 --recursive https://github.com/jcsda/spack-stack.git
 ```
 
 ## Install Spack-Stack Steps by Compiler
@@ -150,14 +127,12 @@ sudo git clone -b develop --recursive https://github.com/jcsda/spack-stack.git
 
 ```bash
 sudo su -
-git clone --depth 1 -b develop \
-    --recursive https://github.com/jcsda/spack-stack \
-    /opt/spack-stack
+
 cd /opt/spack-stack
 source setup.sh
 # Swap default module type for default linux.
 sed -i 's/tcl/lmod/g' configs/sites/tier2/linux.default/modules.yaml
-spack stack create env --site linux.default --template unified-dev --name unified-env-gcc --compiler=gcc
+spack stack create env --site linux.default --template unified-dev --name unified-env-gcc --compiler gcc
 cd envs/unified-env-gcc 
 spack env activate -p .
 export SPACK_SYSTEM_CONFIG_PATH="$PWD/site"
@@ -362,15 +337,14 @@ ctest
 
 </details>
 
-
 <details>
 <summary>Intel</summary>
 
 ```bash
 # Example given for building jedi-bundle
 module use /opt/spack-stack/envs/unified-dev-intel/install/modulefiles/Core
-module load stack-intel
-module load stack-openmpi/5.0.5
+module load stack-intel/2021.10.0
+module load stack-intel-oneapi-mpi/2021.10.0
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env
