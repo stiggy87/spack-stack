@@ -175,13 +175,16 @@ spack config add "packages:fontconfig:variants:+pic"
 spack config add "packages:pixman:variants:+pic"
 spack config add "packages:cairo:variants:+pic"
 spack config add "packages:ewok-env:variants:+mysql"
+
 # Concretize and install
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
 spack install --verbose --fail-fast 2>&1 | tee log.install
+
 # Install modules
 spack module lmod refresh
 spack stack setup-meta-modules
+
 # Add a number of default module locations to the lmod startup script.
 cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
 module use /opt/spack-stack/envs/unified-env-gcc/install/modulefiles/Core
@@ -192,8 +195,7 @@ EOF
 <details>
 <summary><b>Intel Installation</b></summary>
 
-#### Clean and Unified Intel Toolchain
-
+#### Install Intel Compiler
 ```bash
 sudo su -
 rm -rf /opt/intel
@@ -219,7 +221,7 @@ sh math.sh -a --silent --eula accept | tee install.math.log
 popd
 exit
 ```
-
+#### Install Intel Spack-Stack Environment
 ```bash
 sudo su -
 module load gcc-toolset
@@ -231,7 +233,7 @@ source /opt/intel/oneapi/setvars.sh
 cd /opt/spack-stack
 source ./setup.sh
 
-spack stack create env --site linux.default --template unified-dev --name unified-intel --compiler=intel
+spack stack create env --site linux.default --template unified-dev --name unified-intel --compiler intel
 cd envs/unified-intel
 spack env activate -p .
 
