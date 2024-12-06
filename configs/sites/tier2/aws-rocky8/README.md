@@ -319,15 +319,14 @@ source /opt/intel/oneapi/setvars.sh
 cd /opt/spack-stack
 source ./setup.sh
 
-spack stack create env --site linux.default --template unified-dev --name unified-intel --compiler intel
-cd envs/unified-intel
+spack stack create env --site linux.default --template unified-dev --name unified-env-intel --compiler intel
+cd envs/unified-env-intel
 spack env activate -p .
 
 export SPACK_SYSTEM_CONFIG_PATH="${PWD}/site"
 
-spack external find --scope system
+spack external find --scope system --exclude python
 spack external find --scope system perl
-spack external find --scope system python
 spack external find --scope system wget
 spack external find --scope system texlive
 spack external find --scope system mysql
@@ -337,7 +336,7 @@ spack external find --scope system mysql
 cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.10.0%intel@2022.1.0
+    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0
       prefix: /opt/intel/oneapi
       modules:
       - intel-oneapi-mpi/2021.10.0
@@ -357,10 +356,8 @@ spack compiler find --scope system
 
 export -n SPACK_SYSTEM_CONFIG_PATH
 
-spack config add "packages:mpi:buildable:False"
-spack config add "packages:python:buildable:False"
-spack config add "packages:openssl:buildable:False"
-spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0, openmpi@4.1.6]"
+# spack config add "packages:mpi:buildable:False"
+spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0]"
 spack config add "packages:all:compiler:[intel@2021.10.0, gcc@11.2.1]"
 
 # Edit envs/unified-intel/spack.yaml.
@@ -375,7 +372,9 @@ spack config add "packages:all:compiler:[intel@2021.10.0, gcc@11.2.1]"
 # -->
 #     environment:
 #       prepend_path:
-#         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2023.2.3/linux/compiler/lib/intel64_lin'
+#         PATH: /opt/rh/gcc-toolset-11/root/usr/bin
+#         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2023.2.3/linux/compiler/lib/intel64_lin:/usr/lib:/usr/lib64'
+#         CPATH: /opt/rh/gcc-toolset-11/root/usr/include
 
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize

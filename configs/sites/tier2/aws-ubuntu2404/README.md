@@ -46,7 +46,7 @@ apt update
 apt upgrade
 
 # Build tools
-apt install -y build-essentials g++-12 gcc-12 gfortran-12 make cmake automake autoconf
+apt install -y build-essential g++-12 gcc-12 gfortran-12 make cmake automake autoconf
 
 #Install other requirements.
 apt install -y cpp-12 libgomp1 git git-lfs autopoint mysql-server libmysqlclient-dev qtbase5-dev qt5-qmake libqt5svg5-dev qt5dxcb-plugin wget curl file tcl-dev gnupg2 iproute2 locales unzip less bzip2 gettext libtree pkg-config 
@@ -61,12 +61,6 @@ apt install -y python3 python3-pip python3-setuptools
 git config --global credential.helper 'cache --timeout=3600'
 git lfs install
 
-# Add user to sudoers
-usermod -aG sudo ubuntu
-
-# Configure x11 forwarding.
-echo "X11Forwarding yes" >> /etc/ssh/sshd_config
-service sshd restart
 exit # Exit root access
 ```
 
@@ -198,8 +192,6 @@ EOF
 #### Install Intel Compiler
 ```bash
 sudo su -
-rm -rf /opt/intel
-rm -rf /var/intel
 
 mkdir -p /opt/intel/src
 pushd /opt/intel/src
@@ -224,7 +216,6 @@ exit
 #### Install Intel Spack-Stack Environment
 ```bash
 sudo su -
-module load gcc-toolset
 
 source /opt/intel/oneapi/compiler/2023.2.3/env/vars.sh
 source /opt/intel/oneapi/mpi/2021.10.0/env/vars.sh
@@ -239,9 +230,8 @@ spack env activate -p .
 
 export SPACK_SYSTEM_CONFIG_PATH="${PWD}/site"
 
-spack external find --scope system
+spack external find --scope system --exclude bison --exclude openssl --exclude python --exclude gettext --exclude m4
 spack external find --scope system perl
-spack external find --scope system python
 spack external find --scope system wget
 spack external find --scope system texlive
 spack external find --scope system mysql
@@ -261,10 +251,8 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
       prefix: /usr
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.10.0%intel@2022.1.0
+    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0 +classic-names
       prefix: /opt/intel/oneapi
-      modules:
-      - intel-oneapi-mpi/2021.10.0
 EOF
 
 # Can't find qt5 because qtpluginfo is broken,
@@ -279,11 +267,9 @@ EOF
 
 spack compiler find --scope system
 
-export -n SPACK_SYSTEM_CONFIG_PATH
+unset SPACK_SYSTEM_CONFIG_PATH
 
 spack config add "packages:mpi:buildable:False"
-spack config add "packages:python:buildable:False"
-spack config add "packages:openssl:buildable:False"
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0, openmpi@5.0.5]"
 spack config add "packages:all:compiler:[intel@2021.10.0, gcc@12.3.10]"
 
@@ -303,7 +289,7 @@ spack config add "packages:all:compiler:[intel@2021.10.0, gcc@12.3.10]"
 
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize
-spack install -j 12 --verbose 2>&1 | tee log.install
+spack install --fail-fast -j 12 --verbose 2>&1 | tee log.install
 spack module lmod refresh
 spack stack setup-meta-modules
 ```
