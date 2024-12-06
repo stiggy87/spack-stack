@@ -270,7 +270,7 @@ spack compiler find --scope system
 unset SPACK_SYSTEM_CONFIG_PATH
 
 spack config add "packages:mpi:buildable:False"
-spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0, openmpi@5.0.5]"
+spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0]"
 spack config add "packages:all:compiler:[intel@2021.10.0, gcc@12.3.10]"
 
 # Edit envs/unified-intel/spack.yaml.
