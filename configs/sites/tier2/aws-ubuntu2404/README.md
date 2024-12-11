@@ -61,6 +61,10 @@ apt install -y python3 python3-pip python3-setuptools
 git config --global credential.helper 'cache --timeout=3600'
 git lfs install
 
+update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gfortran-12h 12
+
 exit # Exit root access
 ```
 
@@ -224,13 +228,13 @@ source /opt/intel/oneapi/setvars.sh
 cd /opt/spack-stack
 source ./setup.sh
 
-spack stack create env --site linux.default --template unified-dev --name unified-intel --compiler intel
-cd envs/unified-intel
+spack stack create env --site linux.default --template unified-dev --name unified-env-intel --compiler intel
+cd envs/unified-env-intel
 spack env activate -p .
 
 export SPACK_SYSTEM_CONFIG_PATH="${PWD}/site"
 
-spack external find --scope system --exclude bison --exclude openssl --exclude python --exclude gettext --exclude m4
+spack external find --scope system --exclude bison --exclude openssl --exclude python --exclude gettext --exclude m4 --exclude cmake --exclude curl
 spack external find --scope system perl
 spack external find --scope system wget
 spack external find --scope system texlive
@@ -330,7 +334,7 @@ ctest
 
 ```bash
 # Example given for building jedi-bundle
-module use /opt/spack-stack/envs/unified-dev-intel/install/modulefiles/Core
+module use /opt/spack-stack/envs/unified-env-intel/install/modulefiles/Core
 module load stack-intel/2021.10.0
 module load stack-intel-oneapi-mpi/2021.10.0
 module load base-env
