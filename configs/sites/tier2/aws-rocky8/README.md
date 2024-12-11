@@ -216,6 +216,8 @@ sudo su -
 cd /opt/spack-stack
 source setup.sh
 
+scl enable gcc-toolset-11 bash
+
 # Swap default module type for default linux.
 sed -i 's/tcl/lmod/g' configs/sites/tier2/linux.default/modules.yaml
 spack stack create env --site linux.default --template unified-dev --name unified-env-gcc --compiler gcc
@@ -263,16 +265,11 @@ spack config add "packages:ewok-env:variants:+mysql"
 # Concretize and install
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
-spack install --verbose --fail-fast 2>&1 | tee log.install
+spack install --fail-fast -j 16 2>&1 | tee log.install
 
 # Install modules
 spack module lmod refresh
 spack stack setup-meta-modules
-
-# Add a number of default module locations to the lmod startup script.
-cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
-module use /opt/spack-stack/envs/unified-env-gcc/install/modulefiles/Core
-EOF
 ```
 
 </details>
@@ -325,7 +322,7 @@ spack env activate -p .
 
 export SPACK_SYSTEM_CONFIG_PATH="${PWD}/site"
 
-spack external find --scope system --exclude python
+spack external find --scope system --exclude python --exclude curl
 spack external find --scope system perl
 spack external find --scope system wget
 spack external find --scope system texlive
@@ -335,11 +332,10 @@ spack external find --scope system mysql
 # and no way to add object entry to list using "spack config add".
 cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
   intel-oneapi-mpi:
+    buildable: false
     externals:
     - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0
       prefix: /opt/intel/oneapi
-      modules:
-      - intel-oneapi-mpi/2021.10.0
 EOF
 
 # Can't find qt5 because qtpluginfo is broken,
@@ -438,6 +434,8 @@ make update
 make -j10
 ctest
 ```
+
+**Note**: If the `make -j10` shows any errors, re-run it and it should be successful.
 
 </details>
 
