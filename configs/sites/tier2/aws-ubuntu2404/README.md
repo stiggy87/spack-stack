@@ -46,10 +46,10 @@ apt update
 apt upgrade
 
 # Build tools
-apt install -y build-essential g++-12 gcc-12 gfortran-12 make cmake automake autoconf
+apt install -y build-essential g++-11 gcc-11 gfortran-11 make cmake automake autoconf
 
 #Install other requirements.
-apt install -y cpp-12 libgomp1 git git-lfs autopoint mysql-server libmysqlclient-dev qtbase5-dev qt5-qmake libqt5svg5-dev qt5dxcb-plugin wget curl file tcl-dev gnupg2 iproute2 locales unzip less bzip2 gettext libtree pkg-config libcurl4-openssl-dev
+apt install -y cpp-11 libgomp1 git git-lfs autopoint mysql-server libmysqlclient-dev qtbase5-dev qt5-qmake libqt5svg5-dev qt5dxcb-plugin wget curl file tcl-dev gnupg2 iproute2 locales unzip less bzip2 gettext libtree pkg-config libcurl4-openssl-dev
 
 # Editors
 apt install -y vim nano 
@@ -61,9 +61,10 @@ apt install -y python3 python3-pip python3-setuptools
 git config --global credential.helper 'cache --timeout=3600'
 git lfs install
 
-update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
-update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12
+# Change the gcc, g++, and gfortran version to 11 and give it the highest priority
+update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100
+update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 100
 
 exit # Exit root access
 ```
