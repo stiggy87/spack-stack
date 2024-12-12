@@ -27,3 +27,6 @@ packages:
   ecflow:
     require:
     - '%gcc'
+  pixman:
+    require:
+    - '%gcc'
