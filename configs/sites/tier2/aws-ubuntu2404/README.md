@@ -49,7 +49,7 @@ apt upgrade
 apt install -y build-essential g++-12 gcc-12 gfortran-12 make cmake automake autoconf
 
 #Install other requirements.
-apt install -y cpp-12 libgomp1 git git-lfs autopoint mysql-server libmysqlclient-dev qtbase5-dev qt5-qmake libqt5svg5-dev qt5dxcb-plugin wget curl file tcl-dev gnupg2 iproute2 locales unzip less bzip2 gettext libtree pkg-config 
+apt install -y cpp-12 libgomp1 git git-lfs autopoint mysql-server libmysqlclient-dev qtbase5-dev qt5-qmake libqt5svg5-dev qt5dxcb-plugin wget curl file tcl-dev gnupg2 iproute2 locales unzip less bzip2 gettext libtree pkg-config libcurl4-openssl-dev
 
 # Editors
 apt install -y vim nano 
@@ -240,7 +240,7 @@ spack external find --scope system wget
 spack external find --scope system texlive
 spack external find --scope system mysql
 
-# No external find for pre-installed intel-oneapi-mpi (from pcluster AMI),
+# No external find for pre-installed intel-oneapi-mpi,
 # and no way to add object entry to list using "spack config add".
 cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
   gcc:
@@ -276,13 +276,6 @@ unset SPACK_SYSTEM_CONFIG_PATH
 spack config add "packages:mpi:buildable:False"
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0]"
 spack config add "packages:all:compiler:[intel@2021.10.0, gcc@12.3.10]"
-
-# Edit envs/unified-intel/spack.yaml.
-# 1) Find this line:
-#      compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
-# 2) Delete all compilers except for your target compiler. In the case of intel
-#    the line should look like this:
-#      compilers: ['%intel']
 
 # edit envs/unified-env/site/compilers.yaml and replace the following line in the **Intel** compiler section:
 #     environment: {}
