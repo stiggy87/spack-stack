@@ -63,7 +63,7 @@ git lfs install
 
 update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
 update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gfortran-12h 12
+update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12
 
 exit # Exit root access
 ```
