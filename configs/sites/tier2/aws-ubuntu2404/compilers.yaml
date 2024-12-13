@@ -15,7 +15,7 @@ compilers:
         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2023.2.3/linux/compiler/lib/intel64_lin'
     extra_rpaths: []
 - compiler:
-    spec: gcc@12.3.0
+    spec: gcc@11.4.0
     paths:
       cc: /usr/bin/gcc
       cxx: /usr/bin/g++

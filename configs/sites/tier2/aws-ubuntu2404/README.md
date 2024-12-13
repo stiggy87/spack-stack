@@ -69,6 +69,8 @@ update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 10
 exit # Exit root access
 ```
 
+**Important**: Running the `update-alternatives` changes defaults, and if you need to use a different version of gcc/g++/gfortran you can run: `update-alternatives --config [gcc|g++|gfortran]` and select the version you want that is installed.
+
 ### Install Lmod
 
 ```bash
@@ -152,12 +154,12 @@ cat << 'EOF' >> $PWD/site/packages.yaml
   gcc:
     buildable: false
     externals:
-    - spec: gcc@12.3.0
+    - spec: gcc@11.4.0
       prefix: /usr
   gcc-runtime:
     buildable: false
     externals:
-    - spec: gcc-runtime@12.3.0
+    - spec: gcc-runtime@11.4.0
       prefix: /usr
   qt:
     buildable: false
@@ -168,7 +170,7 @@ cat << 'EOF' >> $PWD/site/packages.yaml
 EOF
 
 # Continue configuration.
-spack config add "packages:all:compiler:[gcc@12.3.0]"
+spack config add "packages:all:compiler:[gcc@11.4.0]"
 spack config add "packages:all:providers:mpi:[openmpi@5.0.5]"
 spack config add "packages:fontconfig:variants:+pic"
 spack config add "packages:pixman:variants:+pic"
@@ -247,12 +249,12 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
   gcc:
     buildable: false
     externals:
-    - spec: gcc@12.3.0
+    - spec: gcc@11.4.0
       prefix: /usr
   gcc-runtime:
     buildable: false
     externals:
-    - spec: gcc-runtime@12.3.0
+    - spec: gcc-runtime@11.4.0
       prefix: /usr
   intel-oneapi-mpi:
     externals:
@@ -276,7 +278,7 @@ unset SPACK_SYSTEM_CONFIG_PATH
 
 spack config add "packages:mpi:buildable:False"
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0]"
-spack config add "packages:all:compiler:[intel@2021.10.0, gcc@12.3.10]"
+spack config add "packages:all:compiler:[intel@2021.10.0, gcc@11.4.0]"
 
 # edit envs/unified-env/site/compilers.yaml and replace the following line in the **Intel** compiler section:
 #     environment: {}
