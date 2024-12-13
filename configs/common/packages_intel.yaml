@@ -15,6 +15,12 @@ packages:
   go:
     require:
     - '%gcc'
+  go-bootstrap:
+    require:
+    - '%gcc'
+  gh:
+    require:
+    - '%gcc'
   gsibec:
     require:
     - '+mkl'
