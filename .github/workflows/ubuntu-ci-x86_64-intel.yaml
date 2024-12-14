@@ -61,6 +61,7 @@ jobs:
               --exclude bison --exclude openssl \
               --exclude curl --exclude python
           spack external find --scope system sed
+          spack external find --scope system grep
           spack external find --scope system perl
           spack external find --scope system wget
           spack external find --scope system texlive
@@ -113,14 +114,6 @@ jobs:
           echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    - spec: qt@5.15.3" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-
-          # Add external grep.
-          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "  grep:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    - spec: grep@3.11" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
           export -n SPACK_SYSTEM_CONFIG_PATH
