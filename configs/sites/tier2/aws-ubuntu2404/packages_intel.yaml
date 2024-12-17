@@ -17,7 +17,7 @@ packages:
     # Remove buildable: False and configure version+uncomment externals section below to use intel-oneapi-mkl
     buildable: False
     #externals:
-    #- spec: intel-oneapi-mkl@2022.0.2%intel@2021.10.0
+    #- spec: intel-oneapi-mkl@2023.2.0%intel@2021.10.0
     #  prefix: /opt/intel/oneapi
   ectrans:
     require::

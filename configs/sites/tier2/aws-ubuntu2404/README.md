@@ -114,6 +114,17 @@ exit
 exit
 ```
 
+### Setup MySQL Sercer
+
+```bash
+sudo systemctl start mysqld.service
+sudo systemctl enable mysqld
+
+# Use the mysql server.
+mysql -u root
+exit
+```
+
 ### Clone `spack-stack`
 
 ```bash
@@ -256,6 +267,11 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
     externals:
     - spec: gcc-runtime@11.4.0
       prefix: /usr
+  grep:
+    buildable: False
+    externals:
+    - spec: grep@3.11
+      prefix: /usr
   intel-oneapi-mpi:
     externals:
     - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0 +classic-names
@@ -289,9 +305,13 @@ spack config add "packages:all:compiler:[intel@2021.10.0, gcc@11.4.0]"
 
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize
-spack install --fail-fast -j 12 --verbose 2>&1 | tee log.install
+spack install --fail-fast -j 12 2>&1 | tee log.install
 spack module lmod refresh
 spack stack setup-meta-modules
+
+cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
+module use /opt/spack-stack/envs/unified-env-gcc/install/modulefiles/Core
+EOF
 ```
 
 </details>
@@ -338,6 +358,9 @@ module load jedi-mpas-env
 module load jedi-fv3-env
 module load ewok-env
 module load sp
+
+# (Optional) Re-source the intel environment
+source /opt/intel/oneapi/setvars.sh
 
 mkdir /opt/jedi
 cd /opt/jedi
