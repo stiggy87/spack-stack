@@ -270,6 +270,10 @@ spack install --fail-fast -j 16 2>&1 | tee log.install
 # Install modules
 spack module lmod refresh
 spack stack setup-meta-modules
+
+cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
+module use /opt/spack-stack/envs/unified-env-gcc/install/modulefiles/Core
+EOF
 ```
 
 </details>
@@ -377,6 +381,10 @@ ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize
 spack install -j 12 --verbose 2>&1 | tee log.install
 spack module lmod refresh
 spack stack setup-meta-modules
+
+cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
+module use /opt/spack-stack/envs/unified-env-gcc/install/modulefiles/Core
+EOF
 ```
 
 </details>
