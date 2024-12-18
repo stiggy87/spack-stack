@@ -11,10 +11,10 @@ spack:
   - compiler:
       spec: intel@2021.10.0
       paths:
-        cc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icc
-        cxx: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icpc
-        f77: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort
-        fc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort
+        cc: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/icc
+        cxx: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/icpc
+        f77: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort
+        fc: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort
       flags: {}
       operating_system: ubuntu24.04
       modules: []
@@ -81,9 +81,6 @@ spack:
       externals:
       - spec: diffutils@3.8
         prefix: /usr
-    ectrans:
-      require::
-      - '@1.2.0 ~mkl +fftw'
     findutils:
       externals:
       - spec: findutils@4.8.0
@@ -123,11 +120,6 @@ spack:
     gsibec:
       require::
       - '@1.2.1 ~mkl'
-    intel:
-      buildable: false
-      externals:
-      - spec: intel@2021.10.0
-        prefix: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64
     intel-oneapi-mpi:
       buildable: false
       externals:
