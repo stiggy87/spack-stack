@@ -72,6 +72,9 @@ spack:
       externals:
       - spec: binutils@2.38
         prefix: /usr
+    boost:
+      require:
+      - '%gcc'
     coreutils:
       externals:
       - spec: coreutils@8.32
@@ -81,6 +84,9 @@ spack:
       externals:
       - spec: diffutils@3.8
         prefix: /usr
+    ecflow:
+      require:
+      - '%gcc'
     findutils:
       externals:
       - spec: findutils@4.8.0
@@ -144,6 +150,9 @@ spack:
       externals:
       - spec: mysql@8.0.37
         prefix: /usr
+    pixman:
+      require:
+      - '%gcc'
     perl:
       externals:
       - spec: perl@5.34.0~cpanm+opcode+open+shared+threads
