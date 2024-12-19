@@ -4,7 +4,7 @@ spack:
 
   config:
     checksum: false
-    build_jobs: 2
+    build_jobs: 5
     connect_timeout: 60
 
   compilers:
@@ -233,9 +233,9 @@ spack:
       - automake
       - autopoint
       - bc
-      - build-essential
       - cpp-11
       - cmake
+      - flex
       - g++-11
       - gcc-11
       - gettext
@@ -244,8 +244,8 @@ spack:
       - git-lfs
       - gpg
       - libgomp1
-      - make
       - mysql-server
+      - pkg-config
       - qtbase5-dev
       - qt5-qmake
       - libqt5svg5-dev
@@ -267,6 +267,7 @@ spack:
       - libgomp1
       - make
       - mysql-server
+      - pkg-config
       - qtbase5-dev
       - qt5-qmake
       - libqt5svg5-dev
@@ -305,6 +306,7 @@ spack:
         update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100 && \
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 && \
         update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 100 && \
+        rm /usr/bin/cpp && ln -s /usr/bin/cpp-11 /usr/bin/cpp && \
         rm -rf /var/lib/apt/lists/*
       pre_final: |
         # Set environment variables for installing tzdata
@@ -315,7 +317,8 @@ spack:
         ENV FC=ifort
       build: |
         # Put output of spack find into a file
-        RUN cd /opt/spack-environment && \
+        RUN source /opt/intel/oneapi/setvars.sh && \
+        cd /opt/spack-environment && \
         spack env activate -d . && \
         spack find 2>&1 | tee /root/spack_find.out
       final: |
@@ -328,6 +331,7 @@ spack:
         update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100 && \
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 && \
         update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 100 && \
+        rm /usr/bin/cpp && ln -s /usr/bin/cpp-11 /usr/bin/cpp && \
         rm -rf /var/lib/apt/lists/* && \
         /opt/views/view/bin/pip3 install pynacl
         # Copy spack find output from builder
@@ -339,8 +343,7 @@ spack:
         echo "export CC=icc" >> /home/nonroot/.bashrc && \
         echo "export CXX=icpc" >> /home/nonroot/.bashrc && \
         echo "export FC=ifort" >> /home/nonroot/.bashrc && \
-        echo "source /opt/intel/oneapi/compiler/latest/env/vars.sh" >> /home/nonroot/.bashrc && \
-        echo "source /opt/intel/oneapi/mpi/latest/env/vars.sh" >> /home/nonroot/.bashrc && \
+        echo "source /opt/intel/oneapi/setvars.sh" > /etc/profile.d/02-intel-vars.sh && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig
         # Replicate settings for root user
@@ -350,8 +353,6 @@ spack:
         echo "export CXX=icpc" >> /root/.bashrc && \
         echo "export FC=ifort" >> /root/.bashrc && \
         echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/intel-*/jedi-cmake-*)" >> /root/.bashrc && \
-        echo "source /opt/intel/oneapi/compiler/latest/env/vars.sh" >> /root/.bashrc && \
-        echo "source /opt/intel/oneapi/mpi/latest/env/vars.sh" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
 
     # Labels for the image
