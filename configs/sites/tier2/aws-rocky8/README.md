@@ -398,7 +398,7 @@ EOF
 # Example given for building jedi-bundle
 module use /opt/spack-stack/envs/unified-dev-gcc/install/modulefiles/Core
 module load stack-gcc/11.2.1
-module load stack-openmpi/4.1.6
+module load stack-openmpi/5.0.5
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env
