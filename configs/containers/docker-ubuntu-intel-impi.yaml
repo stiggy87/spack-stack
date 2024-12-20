@@ -129,7 +129,8 @@ spack:
     intel-oneapi-mpi:
       buildable: false
       externals:
-      - spec: intel-oneapi-mpi@2021.10.0
+      # This spec is required in order set paths allowing execution of mpiicx.
+      - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0 +classic-names
         prefix: /opt/intel/oneapi
     libtool:
       externals:
@@ -144,6 +145,11 @@ spack:
     lcms:
       externals:
       - spec: lcms@2.13.1
+        prefix: /usr
+    llvm:
+      buildable: false
+      externals:
+      - spec: llvm@14.0.6
         prefix: /usr
     mysql:
       buildable: false
@@ -244,6 +250,7 @@ spack:
       - git-lfs
       - gpg
       - libgomp1
+      - llvm-14
       - mysql-server
       - pkg-config
       - qtbase5-dev
@@ -265,6 +272,7 @@ spack:
       - git-lfs
       - gpg
       - libgomp1
+      - llvm-14
       - make
       - mysql-server
       - pkg-config
@@ -307,6 +315,9 @@ spack:
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 && \
         update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 100 && \
         rm /usr/bin/cpp && ln -s /usr/bin/cpp-11 /usr/bin/cpp && \
+        # Needed by py-llvmlite
+        update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
+        echo "source /opt/intel/oneapi/setvars.sh" > /etc/profile.d/02-intel-vars.sh && \
         rm -rf /var/lib/apt/lists/*
       pre_final: |
         # Set environment variables for installing tzdata
@@ -317,8 +328,7 @@ spack:
         ENV FC=ifort
       build: |
         # Put output of spack find into a file
-        RUN source /opt/intel/oneapi/setvars.sh && \
-        cd /opt/spack-environment && \
+        RUN cd /opt/spack-environment && \
         spack env activate -d . && \
         spack find 2>&1 | tee /root/spack_find.out
       final: |
@@ -332,6 +342,8 @@ spack:
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 && \
         update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 100 && \
         rm /usr/bin/cpp && ln -s /usr/bin/cpp-11 /usr/bin/cpp && \
+        # Needed by py-llvmlite
+        update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
         rm -rf /var/lib/apt/lists/* && \
         /opt/views/view/bin/pip3 install pynacl
         # Copy spack find output from builder
