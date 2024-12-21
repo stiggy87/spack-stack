@@ -158,7 +158,7 @@ spack:
         # Copy the spack-stack extension repo into the spack code
         COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
         # Register spack-stack extension repo
-        RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
+        RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults && \
         # Needed by py-llvmlite
         update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100
       pre_final: |
