@@ -62,7 +62,6 @@ jobs:
               --exclude curl --exclude python
           spack external find --scope system grep
           spack external find --scope system sed
-          spack external find --scope system grep
           spack external find --scope system perl
           spack external find --scope system wget
           spack external find --scope system texlive
