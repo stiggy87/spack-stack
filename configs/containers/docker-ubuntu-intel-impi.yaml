@@ -164,7 +164,7 @@ spack:
     mysql:
       buildable: false
       externals:
-      - spec: mysql@8.0.37
+      - spec: mysql@8.0.40
         prefix: /usr
     pixman:
       require:

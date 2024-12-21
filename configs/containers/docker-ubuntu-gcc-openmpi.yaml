@@ -4,19 +4,19 @@ spack:
 
   config:
     checksum: false
-    build_jobs: 2
+    build_jobs: 5
     connect_timeout: 60
 
   compilers:
   - compiler:
-      spec: gcc@12.3.0
+      spec: gcc@13.3.0
       paths:
-        cc: /usr/bin/gcc-12
-        cxx: /usr/bin/g++-12
-        f77: /usr/bin/gfortran-12
-        fc: /usr/bin/gfortran-12
+        cc: /usr/bin/gcc-13
+        cxx: /usr/bin/g++-13
+        f77: /usr/bin/gfortran-13
+        fc: /usr/bin/gfortran-13
       flags: {}
-      operating_system: ubuntu22.04
+      operating_system: ubuntu24.04
       modules: []
       environment: {}
       extra_rpaths: []
@@ -29,16 +29,16 @@ spack:
       target: [x86_64]
       providers:
         mpi: [openmpi@5.0.5]
-      compiler: [gcc@12.3.0]
+      compiler: [gcc@13.3.0]
     gcc:
       buildable: false
       externals:
-      - spec: gcc@12.3.0
+      - spec: gcc@13.3.0
         prefix: /usr
     gcc-runtime:
       buildable: false
       externals:
-      - spec: gcc-runtime@12.3.0
+      - spec: gcc-runtime@13.3.0
         prefix: /usr
     diffutils:
       buildable: false
@@ -58,7 +58,7 @@ spack:
     mysql:
       buildable: false
       externals:
-      - spec: mysql@8.0.39
+      - spec: mysql@8.0.40
         prefix: /usr
     qt:
       buildable: false
@@ -71,7 +71,6 @@ spack:
       externals:
       - spec: wget@1.21.2
         prefix: /usr
-      version: [1.21.2]
 
   specs: []
 
@@ -106,10 +105,10 @@ spack:
     os_packages:
       build:
       - bc
-      - cpp-12
-      - g++-12
-      - gcc-12
-      - gfortran-12
+      - cpp-13
+      - g++-13
+      - gcc-13
+      - gfortran-13
       - git
       - git-lfs
       - make
@@ -122,10 +121,10 @@ spack:
 
       final:
       - bc
-      - cpp-12
-      - g++-12
-      - gcc-12
-      - gfortran-12
+      - cpp-13
+      - g++-13
+      - gcc-13
+      - gfortran-13
       - git
       - git-lfs
       - make
@@ -154,10 +153,6 @@ spack:
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
         # Set the GNU 12.x toolchain as the default compilers.
-        RUN ln -svf /usr/bin/gfortran-12 /usr/bin/gfortran && \
-        ln -svf /usr/bin/cpp-12 /usr/bin/cpp && \
-        ln -svf /usr/bin/gcc-12 /usr/bin/gcc && \
-        ln -svf /usr/bin/g++-12 /usr/bin/g++
       pre_final: |
         # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
