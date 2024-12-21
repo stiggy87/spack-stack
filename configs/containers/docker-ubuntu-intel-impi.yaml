@@ -129,7 +129,7 @@ spack:
     intel-oneapi-mkl:
       buildable: false
       externals:
-      - spec: intel-oneapi-mpi@2023.2.0
+      - spec: intel-oneapi-mkl@2023.2.0
         prefix: /opt/intel/oneapi
     intel-oneapi-mpi:
       buildable: false
@@ -140,7 +140,7 @@ spack:
     intel-oneapi-tbb:
       buildable: false
       externals:
-      - spec: intel-oneapi-mpi@2021.10.0
+      - spec: intel-oneapi-tbb@2021.10.0
         prefix: /opt/intel/oneapi
     libtool:
       externals:

@@ -55,6 +55,11 @@ spack:
       externals:
       - spec: git-lfs@3.0.2
         prefix: /usr
+    llvm:
+      buildable: false
+      externals:
+      - spec: llvm@14.0.6
+        prefix: /usr
     mysql:
       buildable: false
       externals:
@@ -111,6 +116,7 @@ spack:
       - gfortran-13
       - git
       - git-lfs
+      - llvm-14
       - make
       - mysql-server
       - qtbase5-dev
@@ -127,6 +133,7 @@ spack:
       - gfortran-13
       - git
       - git-lfs
+      - llvm-14
       - make
       - mysql-server
       - qtbase5-dev
@@ -152,7 +159,8 @@ spack:
         COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
-        # Set the GNU 12.x toolchain as the default compilers.
+        # Needed by py-llvmlite
+        update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100
       pre_final: |
         # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
@@ -168,11 +176,6 @@ spack:
       final: |
         # Copy spack find output from builder
         COPY --from=builder /root/spack_find.out /root/spack_find.out
-        # Set the GNU 12.x toolchain as the default compilers.
-        RUN ln -svf /usr/bin/gfortran-12 /usr/bin/gfortran && \
-        ln -svf /usr/bin/cpp-12 /usr/bin/cpp && \
-        ln -svf /usr/bin/gcc-12 /usr/bin/gcc && \
-        ln -svf /usr/bin/g++-12 /usr/bin/g++
         # Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
@@ -180,6 +183,8 @@ spack:
         echo "export CC=gcc" >> /home/nonroot/.bashrc && \
         echo "export CXX=g++" >> /home/nonroot/.bashrc && \
         echo "export FC=gfortran" >> /home/nonroot/.bashrc && \
+        # Needed by py-llvmlite
+        update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         mkdir /home/nonroot/.pmix && \
         echo "rmaps_default_mapping_policy=:oversubscribe" >> /home/nonroot/.pmix/mca-params.conf && \
