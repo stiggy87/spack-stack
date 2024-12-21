@@ -126,11 +126,21 @@ spack:
     gsibec:
       require::
       - '@1.2.1 ~mkl'
+    intel-oneapi-mkl:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-mpi@2023.2.0
+        prefix: /opt/intel/oneapi
     intel-oneapi-mpi:
       buildable: false
       externals:
       # This spec is required in order set paths allowing execution of mpiicx.
       - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0 +classic-names
+        prefix: /opt/intel/oneapi
+    intel-oneapi-tbb:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-mpi@2021.10.0
         prefix: /opt/intel/oneapi
     libtool:
       externals:
@@ -317,7 +327,6 @@ spack:
         rm /usr/bin/cpp && ln -s /usr/bin/cpp-11 /usr/bin/cpp && \
         # Needed by py-llvmlite
         update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
-        echo "source /opt/intel/oneapi/setvars.sh" > /etc/profile.d/02-intel-vars.sh && \
         rm -rf /var/lib/apt/lists/*
       pre_final: |
         # Set environment variables for installing tzdata
@@ -355,7 +364,7 @@ spack:
         echo "export CC=icc" >> /home/nonroot/.bashrc && \
         echo "export CXX=icpc" >> /home/nonroot/.bashrc && \
         echo "export FC=ifort" >> /home/nonroot/.bashrc && \
-        echo "source /opt/intel/oneapi/setvars.sh" > /etc/profile.d/02-intel-vars.sh && \
+        echo "source /opt/intel/oneapi/setvars.sh" >> /etc/bash.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig
         # Replicate settings for root user
