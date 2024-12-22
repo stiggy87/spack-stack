@@ -91,12 +91,6 @@ spack:
       externals:
       - spec: findutils@4.8.0
         prefix: /usr
-    # DO Not submit - figure out what is going on - MLK is not installed so it must be built but might cause errors
-    #intel-oneapi-mkl:
-    #  buildable: false
-      #externals:
-      #- spec: intel-oneapi-mkl@2022.1.0
-      #  prefix: /opt/intel/oneapi
     flex:
       externals:
       - spec: flex@2.6.4+lex
