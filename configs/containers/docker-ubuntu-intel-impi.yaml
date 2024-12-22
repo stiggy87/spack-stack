@@ -160,6 +160,10 @@ spack:
       buildable: false
       externals:
       - spec: llvm@14.0.6
+    grep:
+      buildable: false
+      externals:
+      - spec: grep@3.7
         prefix: /usr
     mysql:
       buildable: false
