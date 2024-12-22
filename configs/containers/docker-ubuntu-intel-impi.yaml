@@ -57,9 +57,9 @@ spack:
     all:
       require: '%intel'
       target: [core2]
+      compiler: [intel@2021.10.0, gcc@11.4.0]
       providers:
         mpi: [intel-oneapi-mpi@2021.10.0]
-      compiler: [intel@2021.10.0, gcc@11.4.0]
     autoconf:
       externals:
       - spec: autoconf@2.71
