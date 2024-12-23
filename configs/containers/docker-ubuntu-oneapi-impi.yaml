@@ -4,7 +4,7 @@ spack:
 
   config:
     checksum: false
-    build_jobs: 2
+    build_jobs: 6
     connect_timeout: 60
 
   compilers:
@@ -43,7 +43,7 @@ spack:
       target: [core2]
       compiler: [oneapi@2025.0.0, gcc@13.4.0]
       providers:
-        mpi: [intel-oneapi-mpi@2021.14.0]
+        mpi: [intel-oneapi-mpi@2021.14]
     autoconf:
       externals:
       - spec: autoconf@2.71
@@ -109,17 +109,17 @@ spack:
     intel-oneapi-mkl:
       buildable: false
       externals:
-      - spec: intel-oneapi-mkl@2025.0.0
+      - spec: intel-oneapi-mkl@2025.0
         prefix: /opt/intel/oneapi
     intel-oneapi-mpi:
       buildable: false
       externals:
-      - spec: intel-oneapi-mpi@2021.14.0%oneapi@2025.0.0
+      - spec: intel-oneapi-mpi@2021.14%oneapi@2025.0.0
         prefix: /opt/intel/oneapi
     intel-oneapi-tbb:
       buildable: false
       externals:
-      - spec: intel-oneapi-tbb@2022.0.0
+      - spec: intel-oneapi-tbb@2022.0
         prefix: /opt/intel/oneapi
     #libtool:
     #  externals:
@@ -307,6 +307,9 @@ spack:
         echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
         apt update && \
         apt install intel-oneapi-compiler-dpcpp-cpp-2025.0 intel-oneapi-compiler-fortran-2025.0 intel-oneapi-mkl-devel-2025.0 intel-oneapi-mpi-devel-2021.14 intel-oneapi-tbb-devel-2022.0 -y && \
+        ln -s /opt/intel/oneapi/mpi/2021.14 /opt/intel/oneapi/mpi/2021.14.0 && \
+        ln -s /opt/intel/oneapi/mkl/2025.0 /opt/intel/oneapi/mkl/2025.0.0 && \
+        ln -s /opt/intel/oneapi/compiler/2025.0 /opt/intel/oneapi/compiler/2025.0.0 && \
         update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100 && \
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
         update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-13 100 && \
@@ -318,9 +321,9 @@ spack:
         # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
         ENV TZ=Etc/UTC
-        ENV CC=icc
-        ENV CXX=icpc
-        ENV FC=ifort
+        ENV CC=icx
+        ENV CXX=icpx
+        ENV FC=ifx
       build: |
         # Put output of spack find into a file
         RUN cd /opt/spack-environment && \
@@ -347,19 +350,19 @@ spack:
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
         echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
-        echo "export CC=icc" >> /home/nonroot/.bashrc && \
-        echo "export CXX=icpc" >> /home/nonroot/.bashrc && \
-        echo "export FC=ifort" >> /home/nonroot/.bashrc && \
+        echo "export CC=icx" >> /home/nonroot/.bashrc && \
+        echo "export CXX=icpx" >> /home/nonroot/.bashrc && \
+        echo "export FC=ifx" >> /home/nonroot/.bashrc && \
         echo "source /opt/intel/oneapi/setvars.sh" >> /etc/bash.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig
         # Replicate settings for root user
         RUN echo "ulimit -s unlimited" >> /root/.bashrc && \
         echo "ulimit -v unlimited" >> /root/.bashrc && \
-        echo "export CC=icc" >> /root/.bashrc && \
-        echo "export CXX=icpc" >> /root/.bashrc && \
-        echo "export FC=ifort" >> /root/.bashrc && \
-        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/intel-*/jedi-cmake-*)" >> /root/.bashrc && \
+        echo "export CC=icx" >> /root/.bashrc && \
+        echo "export CXX=icpx" >> /root/.bashrc && \
+        echo "export FC=ifx" >> /root/.bashrc && \
+        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/oneapi-*/jedi-cmake-*)" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
 
     # Labels for the image
