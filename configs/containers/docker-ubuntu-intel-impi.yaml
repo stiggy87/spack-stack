@@ -4,7 +4,7 @@ spack:
 
   config:
     checksum: false
-    build_jobs: 5
+    build_jobs: 2
     connect_timeout: 60
 
   compilers:
