@@ -43,8 +43,10 @@ spack:
       paths:
         cc: /opt/intel/oneapi/compiler/2024.2/bin/icx
         cxx: /opt/intel/oneapi/compiler/2024.2/bin/icpx
-        f77: /opt/intel/oneapi/compiler/2024.2/bin/ifx
-        fc: /opt/intel/oneapi/compiler/2024.2/bin/ifx
+        #f77: /opt/intel/oneapi/compiler/2024.2/bin/ifx
+        #fc: /opt/intel/oneapi/compiler/2024.2/bin/ifx
+        f77: /opt/intel/oneapi/compiler/2024.2/bin/ifort
+        fc: /opt/intel/oneapi/compiler/2024.2/bin/ifort
       flags: {}
       operating_system: ubuntu24.04
       target: x86_64
@@ -343,7 +345,7 @@ spack:
         ENV TZ=Etc/UTC
         ENV CC=icx
         ENV CXX=icpx
-        ENV FC=ifx
+        ENV FC=ifort
       build: |
         # Put output of spack find into a file
         RUN cd /opt/spack-environment && \
@@ -372,7 +374,7 @@ spack:
         echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
         echo "export CC=icx" >> /home/nonroot/.bashrc && \
         echo "export CXX=icpx" >> /home/nonroot/.bashrc && \
-        echo "export FC=ifx" >> /home/nonroot/.bashrc && \
+        echo "export FC=ifort" >> /home/nonroot/.bashrc && \
         echo "source /opt/intel/oneapi/setvars.sh" >> /etc/bash.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig
@@ -381,7 +383,7 @@ spack:
         echo "ulimit -v unlimited" >> /root/.bashrc && \
         echo "export CC=icx" >> /root/.bashrc && \
         echo "export CXX=icpx" >> /root/.bashrc && \
-        echo "export FC=ifx" >> /root/.bashrc && \
+        echo "export FC=ifort" >> /root/.bashrc && \
         echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/oneapi-*/jedi-cmake-*)" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
 
