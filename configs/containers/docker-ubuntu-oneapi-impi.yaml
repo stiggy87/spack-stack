@@ -43,10 +43,10 @@ spack:
       paths:
         cc: /opt/intel/oneapi/compiler/2024.2/bin/icx
         cxx: /opt/intel/oneapi/compiler/2024.2/bin/icpx
-        #f77: /opt/intel/oneapi/compiler/2024.2/bin/ifx
-        #fc: /opt/intel/oneapi/compiler/2024.2/bin/ifx
-        f77: /opt/intel/oneapi/compiler/2024.2/bin/ifort
-        fc: /opt/intel/oneapi/compiler/2024.2/bin/ifort
+        f77: /opt/intel/oneapi/compiler/2024.2/bin/ifx
+        fc: /opt/intel/oneapi/compiler/2024.2/bin/ifx
+        #f77: /opt/intel/oneapi/compiler/2024.2/bin/ifort
+        #fc: /opt/intel/oneapi/compiler/2024.2/bin/ifort
       flags: {}
       operating_system: ubuntu24.04
       target: x86_64
@@ -81,9 +81,6 @@ spack:
     bison:
       require:
       - '%gcc'
-    #boost:
-    #  require:
-    #  - '%gcc'
     coreutils:
       externals:
       - spec: coreutils@8.32
@@ -96,21 +93,6 @@ spack:
     ectrans:
       require:
       - '+mkl ~fftw'
-    #ecflow:
-    #  require:
-    #  - '%gcc'
-    #findutils:
-    #  externals:
-    #  - spec: findutils@4.8.0
-    #    prefix: /usr
-    #flex:
-    #  externals:
-    #  - spec: flex@2.6.4+lex
-    #    prefix: /usr
-    #gawk:
-    #  externals:
-    #  - spec: gawk@5.1.0
-    #    prefix: /usr
     git:
       buildable: false
       externals:
@@ -128,6 +110,10 @@ spack:
     gsibec:
       require:
       - '+mkl'
+    # Building icu4c with oneapi intel causes segfault.
+    icu4c:
+      require:
+      - '%gcc'
     intel-oneapi-mkl:
       buildable: false
       externals:
@@ -143,20 +129,8 @@ spack:
       externals:
       - spec: intel-oneapi-tbb@2021.13
         prefix: /opt/intel/oneapi
-    #libtool:
-    #  externals:
-    #  - spec: libtool@2.4.6
-    #    prefix: /usr
     mpi:
       buildable: False
-    #m4:
-    #  externals:
-    #  - spec: m4@1.4.18
-    #    prefix: /usr
-    #lcms:
-    #  externals:
-    #  - spec: lcms@2.13.1
-    #    prefix: /usr
     libmd:
       require:
       - '%gcc'
@@ -167,20 +141,11 @@ spack:
       buildable: false
       externals:
       - spec: llvm@14.0.6
-    #grep:
-    #  buildable: false
-    #  externals:
-    #  - spec: grep@3.7
-    #    prefix: /usr
     mysql:
       buildable: false
       externals:
       - spec: mysql@8.0.40
         prefix: /usr
-    #perl:
-    #  externals:
-    #  - spec: perl@5.34.0~cpanm+opcode+open+shared+threads
-    #    prefix: /usr
     pkg-config:
       externals:
       - spec: pkg-config@0.29.2
@@ -193,20 +158,6 @@ spack:
     py-numpy:
       require:
       - '^intel-oneapi-mkl'
-    # Turn off crypt, because libxcrypt doesn't
-    # build with Intel.
-    #python:
-    #  variants: ~crypt
-    #qt:
-    #  buildable: false
-    #  externals:
-    #  - spec: qt@5.15.3
-    #    prefix: /usr
-    #  version: [5.15.3]
-    #sed:
-    #  externals:
-    #  - spec: sed@4.8
-    #    prefix: /usr
     tar:
       externals:
       - spec: tar@1.34
@@ -228,18 +179,8 @@ spack:
     # Select the format of the recipe e.g. docker,
     # singularity or anything else that is currently supported
     format: docker
-    # How to use:
-    #$ spack containerize > Dockerfile
-    #$ sudo docker build -t myimage .
-    #$ sudo docker run -it myimage
 
-    #format: singularity
-    # How to use:
-    #$ spack containerize > singularity.def
-    #$ sudo singularity build singularity.sif singularity.def
-
-    # Sets the base images for the stages where Spack builds the
-    # software or where the software gets installed after being built..
+    # Sets the base images for the stages where Spack builds and installs.
     images:
       os: ubuntu:24.04
       spack:
@@ -345,7 +286,7 @@ spack:
         ENV TZ=Etc/UTC
         ENV CC=icx
         ENV CXX=icpx
-        ENV FC=ifort
+        ENV FC=ifx
       build: |
         # Put output of spack find into a file
         RUN cd /opt/spack-environment && \
@@ -374,7 +315,7 @@ spack:
         echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
         echo "export CC=icx" >> /home/nonroot/.bashrc && \
         echo "export CXX=icpx" >> /home/nonroot/.bashrc && \
-        echo "export FC=ifort" >> /home/nonroot/.bashrc && \
+        echo "export FC=ifx" >> /home/nonroot/.bashrc && \
         echo "source /opt/intel/oneapi/setvars.sh" >> /etc/bash.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig
@@ -383,11 +324,11 @@ spack:
         echo "ulimit -v unlimited" >> /root/.bashrc && \
         echo "export CC=icx" >> /root/.bashrc && \
         echo "export CXX=icpx" >> /root/.bashrc && \
-        echo "export FC=ifort" >> /root/.bashrc && \
+        echo "export FC=ifx" >> /root/.bashrc && \
         echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/oneapi-*/jedi-cmake-*)" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
 
     # Labels for the image
     labels:
       app: ""
-      mpi: "intel-oneapi-mpi"
+      mpi: "intel-llvm-oneapi-mpi"
