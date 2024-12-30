@@ -230,6 +230,7 @@ spack external find --scope system \
     --exclude openssh --exclude python
 spack external find --scope system wget
 spack external find --scope system mysql
+spack external find --scope system grep
 spack compiler find --scope system
 unset SPACK_SYSTEM_CONFIG_PATH
 
@@ -331,6 +332,7 @@ spack external find --scope system perl
 spack external find --scope system wget
 spack external find --scope system texlive
 spack external find --scope system mysql
+spack external find --scope system grep
 
 # No external find for pre-installed intel-oneapi-mpi (from pcluster AMI),
 # and no way to add object entry to list using "spack config add".
