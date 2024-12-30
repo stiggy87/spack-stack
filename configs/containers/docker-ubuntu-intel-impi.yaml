@@ -87,6 +87,9 @@ spack:
     ecflow:
       require:
       - '%gcc'
+    ectrans:
+      require:
+      - '+mkl ~fftw'
     findutils:
       externals:
       - spec: findutils@4.8.0
