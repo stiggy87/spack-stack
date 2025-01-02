@@ -205,10 +205,12 @@ EOF
 ```
 
 </details>
+
 <details>
 <summary><b>Intel Installation</b></summary>
 
 #### Install Intel Compiler
+
 ```bash
 sudo su -
 
@@ -232,7 +234,9 @@ sh math.sh -a --silent --eula accept | tee install.math.log
 popd
 exit
 ```
+
 #### Install Intel Spack-Stack Environment
+
 ```bash
 sudo su -
 
