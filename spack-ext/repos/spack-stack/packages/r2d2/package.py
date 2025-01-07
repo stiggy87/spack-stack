@@ -7,7 +7,7 @@ from spack.package import *
 
 
 class R2d2(PythonPackage):
-    """Research Repository for Data and Diagnostics (R2D2) for JEDI at JCSDA."""
+    """Research Repository for Data and Diagnostics (R2D2) Client for JEDI at JCSDA."""
 
     homepage = "https://github.com/JCSDA-internal/r2d2-client"
     git = "https://github.com/JCSDA-internal/r2d2-client.git"
