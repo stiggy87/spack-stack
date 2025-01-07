@@ -24,3 +24,4 @@ class R2d2(PythonPackage):
     depends_on("py-idna", type=("run"))
     depends_on("py-requests", type=("run"))
     depends_on("py-s3transfer", type=("run"))
+    depends_on("py-setuptools", type=("build", "run"))
