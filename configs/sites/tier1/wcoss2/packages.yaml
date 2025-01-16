@@ -1,14 +1,27 @@
   packages:
+    #
+    ### Set compiler.
+    #
     all:
+      prefer: ['%intel@19.1.3.304']
       compiler:: [intel@19.1.3.304]
-      providers:
-        mpi:: [cray-mpich@8.1.9]
-        # Remove the next three lines to switch to intel-oneapi-mkl
-        blas:: [openblas]
-        fftw-api:: [fftw]
-        lapack:: [openblas]
+    #
+    ### Strictly set virtual package providers.
+    #
     mpi:
       buildable: False
+      require: cray-mpich
+    fftw-api:
+      require: fftw
+    blas:
+      require: openblas
+    lapack:
+      require: openblas
+    jpeg:
+      require: libjpeg-turbo
+    #
+    ### External packages.
+    #
     cray-mpich:
       externals:
       - spec: cray-mpich@8.1.9~wrappers
@@ -16,35 +29,20 @@
         - libfabric
         - craype-network-ofi
         - cray-mpich/8.1.9
-    ectrans:
-      require::
-      - '@1.2.0 ~mkl +fftw'
-    gsibec:
-      require::
-      - '@1.2.1 ~mkl'
-    py-numpy:
-      require::
-      - '^[virtuals=lapack,blas] openblas'
-      - '@:1.25'
-      - any_of: ['@:1.24']
-        when: '%intel@19.1.3.304'
-    # *DH
-    eckit:
+    #
+    ### Individual package settings.
+    # Use `require::` to override require's from {common,site}/packages.yaml,
+    # and `require:<newline>  - '...'` to add to existing ones.
+    #
+    boost:
       require:
-      - '%intel'
-      - any_of: ["@:1.24"]
-        when: "%intel@19.1.3.304"
-    eccodes:
-      require:
-      - any_of: ["@2.25.0"]
-        when: "%intel@19.1.3.304"
-        message: "2.25.0 is the last version to use C++11 (as opposed to C++17)"
-    py-scipy:
-      require:
-      - any_of: ["@1.10.1"]
-        when: "%intel@19.1.3.304"
+      - '%gcc'
+      - '@1.84 ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams
+        ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex
+        +serialization ~signals +system +test +thread +timer ~wave visibility=hidden cxxstd=17'
     cdo:
       require:
+      - 'grib2=none'   # avoids eccodes/grib-api dependency
       - '%intel'
       - any_of: ["@2.2.2"]
         when: "%intel@2022.0.2.262"
@@ -52,34 +50,67 @@
       - any_of: ["@2.0.5"]
         when: "%intel@19.1.3.304"
         message: "2.0.5 is the last version to use C++14"
-    git:
-      buildable: false
-      externals:
-      - spec: git@2.35.3
-        prefix: /usr
-    git-lfs:
-      buildable: false
-      externals:
-      - spec: git-lfs@2.11.0
-        modules: [git-lfs/2.11.0]
-    pkg-config:
-      buildable: false
-      externals:
-      - spec: pkg-config@0.29.2
-        prefix: /usr
-    patchelf:
-      version: ['0.13.1']
-    gettext:
-      version: ['0.19.7']
-    rhash:
-      version: ['1.3.5']
-    gdal:
-      variants: ~curl
+    curl:
+      require:
+      - ~nghttp2   # avoid nghttp2 dependency
+    eccodes:
+      require:
+      - any_of: ["@2.25.0"]
+        when: "%intel@19.1.3.304"
+        message: "2.25.0 is the last version to use C++11 (as opposed to C++17)"
+    ecmwf-atlas:
+      'require:': +fckit ~trans ~fftw   # disabling trans and fftw to minimize dependencies; older version because newer eckit doesn't build with intel@19
+    ectrans:
+      require::
+      - '@1.2.0 ~mkl +fftw'
+    esmf:
+      require:
+      - snapshot=none   # make sure spack-stack doesn't accidentally give us a beta snapshot
+    fckit:
+      'require:': +eckit   # older version needed for older eckit & ecmwf-atlas
     flex:
       buildable: false
       externals:
       - spec: flex@2.6.4+lex
         prefix: /usr
-    scotch::
-      version: ['7.0.4']
-      require: +mpi+metis~shared~threads~mpi_thread+noarch+esmumps
+    gcc-runtime:
+      require: '%gcc'
+    gdal:
+      variants: ~curl
+    gettext:
+      version: ['0.19.7']
+    glib:
+      require: '@:2.74.3' # newer versions don't build with intel@19
+    gsibec:
+      require::
+      - '@1.2.1 ~mkl'
+    harfbuzz:
+      require: '%gcc'
+    libffi:
+      require: '@3.3'
+    mapl:
+      require:
+      - ~pflogger ~fargparse ~extdata2g   # minimize dependencies
+    netcdf-c:
+      'require:': +mpi ~parallel-netcdf ~dap ~blosc ~szip build_system=autotools   # disabling dap prevents network access; disabling blosc and szip reduces dependencies
+    patchelf:
+      version: ['0.13.1']
+    py-numpy:
+      require::
+      - '^[virtuals=lapack,blas] openblas'
+      - '@:1.25'
+      - any_of: ['@:1.24']
+        when: '%intel@19.1.3.304'
+    py-pandas:
+      'require:': ~excel # minimize dependencies
+    py-scipy:
+      require:
+      - any_of: ["@1.10.1"]
+        when: "%intel@19.1.3.304"
+    py-setuptools:
+      require: '@63.4.3'
+    rhash:
+      version: ['1.3.5']
+    subversion:
+      require:
+      - ~serf +pic   # avoid serf dependency
