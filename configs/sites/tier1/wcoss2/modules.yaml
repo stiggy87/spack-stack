@@ -12,3 +12,6 @@ modules:
       - netcdf_c_virt
       - esmf_virt
       - python_virt
+      boost:
+        suffixes:
+          '%gcc': gcc
