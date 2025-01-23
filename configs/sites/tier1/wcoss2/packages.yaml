@@ -115,7 +115,7 @@
     py-scipy:
       require:
       - any_of: ["@1.10.1"]
-        when: "%intel@:19'
+        when: '%intel@:19'
     py-setuptools:
       require: '@63.4.3' #   avoid duplicate build deps
     rhash:
