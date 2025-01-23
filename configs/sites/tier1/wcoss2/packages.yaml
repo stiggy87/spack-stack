@@ -35,8 +35,7 @@
     # and `require:<newline>  - '...'` to add to existing ones.
     #
     boost:
-      require:
-      - '%gcc'
+      require::
       - '@1.84 ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams
         ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex
         +serialization ~signals +system +test +thread +timer ~wave visibility=hidden cxxstd=17'
