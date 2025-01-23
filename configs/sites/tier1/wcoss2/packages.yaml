@@ -73,10 +73,7 @@
     fckit:
       'require:': +eckit   # older version needed for older eckit & ecmwf-atlas
     flex:
-      buildable: false
-      externals:
-      - spec: flex@2.6.4+lex
-        prefix: /usr
+      require: '@2.6.4'
     gcc-runtime:
       require: '%gcc'
     gdal:
