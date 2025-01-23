@@ -5,3 +5,10 @@ modules:
     lmod:
       include:
       - python
+      core_compilers: [gcc, intel]
+      hierarchy:
+      - mpi
+      - hdf5_virt
+      - netcdf_c_virt
+      - esmf_virt
+      - python_virt
