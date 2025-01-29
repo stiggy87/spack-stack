@@ -7,11 +7,6 @@ spack:
       root: $env/install
     deprecated: true
 
-  modules:
-    default:
-      roots:
-        lmod: $env/install/modulefiles
-
   view: false
 
   include: []
