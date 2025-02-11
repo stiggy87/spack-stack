@@ -1,11 +1,11 @@
 compilers:
 - compiler:
-    spec: intel@=2021.10.0
+    spec: intel@=2024.2.1
     paths:
-      cc: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/icc
-      cxx: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/icpc
-      f77: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort
-      fc: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort
+      cc: /opt/intel/oneapi/compiler/2024.2.1/linux/bin/intel64/icpx
+      cxx: /opt/intel/oneapi/compiler/2024.2.1/linux/bin/intel64/icpx
+      f77: /opt/intel/oneapi/compiler/2024.2.1/linux/bin/intel64/ifort
+      fc: /opt/intel/oneapi/compiler/2024.2.1/linux/bin/intel64/ifort
     flags: {}
     operating_system: rocky8
     target: x86_64
@@ -13,7 +13,7 @@ compilers:
     environment:
       prepend_path:
         PATH: /opt/rh/gcc-toolset-11/root/user/bin
-        LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2023.2.3/linux/compiler/lib/intel64_lin:/usr/lib64:/usr/lib'
+        LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2024.2.1/linux/compiler/lib/intel64_lin:/usr/lib64:/usr/lib'
         CPATH: /opt/rh/gcc-toolset-11/root/user/include
     extra_rpaths: []
 - compiler:
