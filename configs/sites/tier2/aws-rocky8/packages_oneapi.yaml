@@ -13,17 +13,15 @@ packages:
     - spec: intel-oneapi-mpi@2021.13
       prefix: /opt/intel/oneapi
   intel-oneapi-mkl:
-    # Remove buildable: False and configure version+uncomment externals section below to use intel-oneapi-mkl
     buildable: False
-    #externals:
-    #- spec: intel-oneapi-mkl@2022.0.2%intel@2021.10.0
-    #  prefix: /opt/intel/oneapi
   ectrans:
     require::
-    - '@1.2.0 ~mkl +fftw'
+    - '@1.5.0 ~mkl +fftw'
   gsibec:
     require::
     - '@1.2.1 ~mkl'
   py-numpy:
     require::
-    - '@:1.23 ^openblas'
+    - '@:1.26.4 ^openblas'
+  gmake:
+    buildable: False
