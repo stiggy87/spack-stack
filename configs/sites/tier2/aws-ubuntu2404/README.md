@@ -297,7 +297,7 @@ EOF
 
 spack compiler find --scope system
 
-# Replalce ifx with ifort
+# Replace ifx with ifort
 sed -i 's/ifx/ifort/g' ${PWD}/site/compilers.yaml
 
 unset SPACK_SYSTEM_CONFIG_PATH
