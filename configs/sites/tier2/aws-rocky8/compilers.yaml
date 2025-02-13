@@ -2,7 +2,7 @@ compilers:
 - compiler:
     spec: oneapi@=2024.2.1
     paths:
-      cc: /opt/intel/oneapi/compiler/2024.2/bin/icpx
+      cc: /opt/intel/oneapi/compiler/2024.2/bin/icx
       cxx: /opt/intel/oneapi/compiler/2024.2/bin/icpx
       f77: /opt/intel/oneapi/compiler/2024.2/bin/ifort
       fc: /opt/intel/oneapi/compiler/2024.2/bin/ifort
