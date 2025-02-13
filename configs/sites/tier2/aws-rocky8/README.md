@@ -204,7 +204,7 @@ exit
 ```bash
 # if in sudo su -
 cd /opt
-git clone -b release/1.9.0 --recursive https://github.com/jcsda/spack-stack.git
+git clone -b develop --recursive https://github.com/jcsda/spack-stack.git
 ```
 
 ## Install Steps by Compiler

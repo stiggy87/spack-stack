@@ -134,7 +134,7 @@ EXIT;
 
 ```bash
 cd /opt
-sudo git clone -b release/1.9.0 --depth 1 --recursive https://github.com/jcsda/spack-stack.git
+sudo git clone -b develop --depth 1 --recursive https://github.com/jcsda/spack-stack.git
 ```
 
 ## Install Spack-Stack Steps by Compiler
