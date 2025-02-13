@@ -7,8 +7,6 @@ packages:
       blas:: [openblas]
       fftw-api:: [fftw]
       lapack:: [openblas]
-  mpi:
-    buildable: False
   intel-oneapi-mpi:
     buildable: False
   intel-oneapi-mkl:
