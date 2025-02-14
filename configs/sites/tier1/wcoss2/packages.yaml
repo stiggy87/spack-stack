@@ -71,8 +71,6 @@
       require:
       - snapshot=none   # make sure spack-stack doesn't accidentally give us a beta snapshot
       - '~python'
-    fckit:
-      'require:': +eckit   # older version needed for older eckit & ecmwf-atlas
     flex:
       require: '@2.6.4'
     gcc-runtime:
