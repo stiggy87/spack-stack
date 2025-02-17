@@ -49,7 +49,7 @@ apt upgrade -y
 apt install -y build-essential g++-11 gcc-11 gfortran-11 g++-12 gcc-12 gfortran-12 g++-13 gcc-13 gfortran-13 make cmake automake autoconf apt-utils
 
 #Install other requirements.
-apt install -y cpp-11 libgomp1 git git-lfs autopoint mysql-server libmysqlclient-dev qtbase5-dev qt5-qmake libqt5svg5-dev qt5dxcb-plugin wget curl file tcl-dev gnupg2 iproute2 locales unzip less bzip2 gettext libtree pkg-config libcurl4-openssl-dev mysql-server
+apt install -y cpp-11 libgomp1 git git-lfs autopoint mysql-server libmysqlclient-dev qtbase5-dev qt5-qmake libqt5svg5-dev qt5dxcb-plugin wget curl file tcl-dev gnupg2 iproute2 locales unzip less bzip2 gettext libtree pkg-config libcurl4-openssl-dev mysql-server libtool flex
 
 # Editors
 apt install -y vim nano 
