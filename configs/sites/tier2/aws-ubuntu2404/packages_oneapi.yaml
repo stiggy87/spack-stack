@@ -4,9 +4,9 @@ packages:
     providers:
       mpi:: [intel-oneapi-mpi@2021.13]
       # Remove the next three lines to switch to intel-oneapi-mkl
-      blas:: [openblas]
-      fftw-api:: [fftw]
-      lapack:: [openblas]
+      blas:: [intel-oneapi-mkl]
+      fftw-api:: [intel-oneapi-mkl]
+      lapack:: [intel-oneapi-mkl]
   intel-oneapi-runtime:
     buildable: False
     externals:
@@ -19,14 +19,22 @@ packages:
       prefix: /opt/intel/oneapi
   intel-oneapi-mkl:
     buildable: False
+    externals:
+    - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.1
+      prefix: /opt/intel/oneapi
+  intel-oneapi-tbb:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-tbb@2021.13%oneapi@2024.2.1
+      prefix: /opt/intel/oneapi
   ectrans:
     require::
-    - '@1.5.0 ~mkl +fftw'
+    - '@1.5.0 +mkl ~fftw'
   gsibec:
     require::
-    - '@1.2.1 ~mkl'
+    - '@1.2.1 +mkl'
   py-numpy:
     require::
-    - '@:1.26.4 ^openblas'
+    - '@:1.26.4 ^intel-oneapi-mkl'
   gmake:
     buildable: False

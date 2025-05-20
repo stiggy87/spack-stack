@@ -61,10 +61,10 @@ apt install -y python3 python3-pip python3-setuptools
 git config --global credential.helper 'cache --timeout=3600'
 git lfs install
 
-# Change the gcc, g++, and gfortran version to 11 and give it the highest priority
-update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100
-update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 100
+# Change the gcc, g++, and gfortran version to 13 and give it the highest priority
+update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
+update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-13 100
 
 exit # Exit root access
 ```
@@ -114,7 +114,7 @@ exit
 exit
 ```
 
-### Setup MySQL Sercer
+### Setup MySQL Server
 
 ```bash
 sudo systemctl status mysql.service
@@ -171,12 +171,12 @@ cat << 'EOF' >> $PWD/site/packages.yaml
   gcc:
     buildable: false
     externals:
-    - spec: gcc@11.4.0
+    - spec: gcc@13.3.0
       prefix: /usr
   gcc-runtime:
     buildable: false
     externals:
-    - spec: gcc-runtime@11.4.0
+    - spec: gcc-runtime@13.3.0
       prefix: /usr
   qt:
     buildable: false
@@ -187,8 +187,8 @@ cat << 'EOF' >> $PWD/site/packages.yaml
 EOF
 
 # Continue configuration.
-spack config add "packages:all:compiler:[gcc@11.4.0]"
-spack config add "packages:all:providers:mpi:[openmpi@5.0.5]"
+spack config add "packages:all:compiler:[gcc@13.3.0]"
+spack config add "packages:all:providers:mpi:[openmpi@5.0.6]"
 spack config add "packages:fontconfig:variants:+pic"
 spack config add "packages:pixman:variants:+pic"
 spack config add "packages:cairo:variants:+pic"
@@ -281,7 +281,7 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
   intel-oneapi-runtime:
     buildable: false
     externals:
-    - spec: intel-oneapi-runtime%oneapi@2024.2.1
+    - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
       prefix: /opt/intel/oneapi
 EOF
 
@@ -305,6 +305,12 @@ unset SPACK_SYSTEM_CONFIG_PATH
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.13]"
 spack config add "packages:all:compiler:[oneapi@2024.2.1, gcc@13.3.0]"
 spack config add "packages:gmake:buildable:False"
+spack config add "packages:all:providers:blas:[intel-oneapi-mkl]"
+spack config add "packages:all:providers:fftw-api:[intel-oneapi-mkl]"
+spack config add "packages:all:providers:lapack:[intel-oneapi-mkl]"
+spack config add "packages:ectrans:require:'+mkl ~fftw'"
+spack config add "packages:gsibec:require:'+mkl'"
+spack config add "packages:py-numpy:require:['^intel-oneapi-mkl']"
 
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
@@ -329,6 +335,7 @@ EOF
 module use /opt/spack-stack/envs/unified-dev-gcc/install/modulefiles/Core
 module load stack-gcc/11.4.0
 module load stack-openmpi/5.0.5
+module load stack-python
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env
@@ -359,6 +366,7 @@ source /opt/intel/oneapi/setvars.sh
 module use /opt/spack-stack/envs/unified-env-oneapi/install/modulefiles/Core
 module load stack-oneapi/2024.2.1
 module load stack-intel-oneapi-mpi/2021.13
+module load stack-python
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env
