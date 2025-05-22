@@ -70,7 +70,7 @@ packages:
   esmf:
     require:
     - '~xerces ~pnetcdf +shared +external-parallelio'
-    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0b08 snapshot=b08']
+    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0b09 snapshot=b09']
     - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
       when: "%intel"
       message: "Extra ESMF compile options for Intel"
@@ -146,7 +146,7 @@ packages:
   hdf-eos2:
     require: '@2.20v1.00'
   ip:
-    require: '@5.3.0 precision=4,d,8'
+    require: '@5.4.0 precision=4,d,8'
   ip2:
     require: '@1.1.2'
   jasper:
@@ -198,12 +198,7 @@ packages:
     require: '@4.6.1 +parallel_tests'
   # ninja - when adding information here, also check Discover site config
   odc:
-    require: '@1.5.2 ~fortran'
-  # Todo: update to 0.3.28 so that it builds with 'clang'. Check
-  # packages_clang.yaml where we are overwriting openblas for now.
-  openblas:
-    require:
-    - '@0.3.24'
+    require: '@1.6.1 ~fortran'
   openmpi:
     require: '~internal-hwloc +two_level_namespace'
   openssl:
@@ -273,8 +268,10 @@ packages:
     require: '@69'
   py-setuptools-rust:
     require: '+rust_bootstrap'
+  # When making changes here, also check the tier2/blackpearl/packages.yaml
   py-torch:
-    require: '+custom-protobuf ~mkldnn'
+    require:
+    - '+custom-protobuf ~mkldnn'
   # To avoid duplicate packages
   py-urllib3:
     require: '@1.26.12'
