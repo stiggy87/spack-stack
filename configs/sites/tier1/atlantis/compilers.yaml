@@ -88,8 +88,8 @@ compilers:
     - llvm/20.1.5
     environment:
       append_path:
-        LD_LIBRARY_PATH: /gpfs/neptune/spack-stack/llvm-20.1.5/lib
+        LD_LIBRARY_PATH: /gpfs/neptune/spack-stack/llvm-20.1.5/lib:/gpfs/neptune/spack-stack/llvm-20.1.5/lib/x86_64-unknown-linux-gnu
       prepend_path:
         MODULEPATH: /gpfs/neptune/spack-stack/openmpi-5.0.6/llvm-20.1.5/modulefiles:/gpfs/neptune/spack-stack/llvm-20.1.5/modulefiles
-    extra_rpaths: [/gpfs/neptune/spack-stack/llvm-20.1.5/lib]
+    extra_rpaths: [/gpfs/neptune/spack-stack/llvm-20.1.5/lib, /gpfs/neptune/spack-stack/llvm-20.1.5/lib/x86_64-unknown-linux-gnu ]
 
